@@ -348,7 +348,7 @@ options.getPartiallyHiddenKey = function(key) {
     return !key ? 'Error' : (key.substr(0, 8) + '*'.repeat(10));
 };
 
-options.initConnectedDatabases = function() {
+options.initConnectedDatabases = async function() {
     const dialogDeleteConnectedDatabaseModal = new bootstrap.Modal($('#dialogDeleteConnectedDatabase'),
         { keyboard: true, show: false, backdrop: true });
 
@@ -416,6 +416,12 @@ options.initConnectedDatabases = function() {
     for (const hash in hashList) {
         addHashToTable(hash);
     }
+
+    // Disable connect button if database is closed or already associated
+    const isAssociated = await browser.runtime.sendMessage({ action: 'is_associated' });
+    const isDatabaseClosed = await browser.runtime.sendMessage({ action: 'is_database_closed' });
+
+    $('#connect-button').disabled = isAssociated || isDatabaseClosed;
 
     $('#connect-button').addEventListener('click', async function() {
         const result = await browser.runtime.sendMessage({ action: 'associate' });

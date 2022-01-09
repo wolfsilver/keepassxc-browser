@@ -218,6 +218,18 @@ kpxcEvent.hideTroubleshootingGuideAlert = async function(tab) {
     await kpxcEvent.onSaveSettings(tab, settings);
 };
 
+kpxcEvent.isAssociated = async function() {
+    return keepass.isCurrentDatabaseAssociated;
+};
+
+kpxcEvent.isDatabaseClosed = async function() {
+    return keepass.isDatabaseClosed;
+};
+
+kpxcEvent.isConnected = async function() {
+    return keepassClient.isConnected;
+};
+
 // All methods named in this object have to be declared BEFORE this!
 kpxcEvent.messageHandlers = {
     'add_credentials': keepass.addCredentials,
@@ -240,7 +252,9 @@ kpxcEvent.messageHandlers = {
     'hide_getting_started_guide_alert': kpxcEvent.hideGettingStartedGuideAlert,
     'hide_troubleshooting_guide_alert': kpxcEvent.hideTroubleshootingGuideAlert,
     'init_http_auth': kpxcEvent.initHttpAuth,
+    'is_associated': kpxcEvent.isAssociated,
     'is_connected': kpxcEvent.getIsKeePassXCAvailable,
+    'is_database_closed': kpxcEvent.isDatabaseClosed,
     'load_keyring': kpxcEvent.onLoadKeyRing,
     'load_settings': kpxcEvent.onLoadSettings,
     'lock_database': kpxcEvent.lockDatabase,
