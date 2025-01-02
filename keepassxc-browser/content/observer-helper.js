@@ -20,7 +20,6 @@ kpxcObserverHelper.ignoredNodeNames = [
     'HTML',
     'LINK',
     'SCRIPT',
-    'SPAN',
     'VIDEO',
 ];
 
@@ -329,8 +328,11 @@ const getShadowDOM = function(elem) {
 
 // Filter for TreeWalker
 const treeWalkerFilter = function(node) {
-    return !node || node.disabled || node.getLowerCaseAttribute('type') === 'hidden'
-        ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT;
+    return !node ||
+        node?.disabled ||
+        (typeof node?.getAttribute !== 'undefined' && node?.getLowerCaseAttribute('type') === 'hidden')
+        ? NodeFilter.FILTER_REJECT
+        : NodeFilter.FILTER_ACCEPT;
 };
 
 // Traverses all child elements, looking for input fields inside Shadow DOM
